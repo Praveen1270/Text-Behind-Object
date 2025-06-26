@@ -9,7 +9,8 @@ interface CanvasProps {
   isLoading: boolean;
   canvasWidth: number;
   canvasHeight: number;
-  previewDisplaySize?: number;
+  previewDisplayWidth?: number;
+  previewDisplayHeight?: number;
 }
 
 export interface CanvasHandle {
@@ -23,7 +24,8 @@ export const Canvas = forwardRef<CanvasHandle, CanvasProps>(({
   isLoading,
   canvasWidth,
   canvasHeight,
-  previewDisplaySize = 360
+  previewDisplayWidth = 360,
+  previewDisplayHeight = 360
 }, ref) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -96,12 +98,12 @@ export const Canvas = forwardRef<CanvasHandle, CanvasProps>(({
   }, [backgroundImage, foregroundImage, textSets, canvasWidth, canvasHeight]);
 
   return (
-    <div className="relative" style={{ width: previewDisplaySize, height: previewDisplaySize }}>
+    <div className="relative" style={{ width: previewDisplayWidth, height: previewDisplayHeight }}>
       <canvas
         ref={canvasRef}
         width={canvasWidth}
         height={canvasHeight}
-        style={{ display: 'block', width: previewDisplaySize, height: previewDisplaySize, background: '#fff', borderRadius: 12, border: '1px solid #d1d5db' }}
+        style={{ display: 'block', width: previewDisplayWidth, height: previewDisplayHeight, background: '#fff', borderRadius: 12, border: '1px solid #d1d5db' }}
       />
       {isLoading && (
         <div className="absolute inset-0 bg-black/50 flex items-center justify-center" style={{ zIndex: 4 }}>
