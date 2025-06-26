@@ -7,7 +7,6 @@ interface TextEditorProps {
   onUpdate: (id: string, updates: Partial<TextSet>) => void;
   onRemove: (id: string) => void;
   onDuplicate: (id: string) => void;
-  isDarkMode: boolean;
   imageDimensions: { width: number; height: number } | null;
 }
 
@@ -17,23 +16,11 @@ const FONT_FAMILIES = [
   'Raleway', 'Poppins', 'Oswald', 'Playfair Display', 'Merriweather'
 ];
 
-const PRESET_COLORS = [
-  { name: 'white', value: '#FFFFFF' },
-  { name: 'black', value: '#000000' },
-  { name: 'red', value: '#EF4444' },
-  { name: 'blue', value: '#3B82F6' },
-  { name: 'green', value: '#10B981' },
-  { name: 'yellow', value: '#F59E0B' },
-  { name: 'purple', value: '#8B5CF6' },
-  { name: 'pink', value: '#EC4899' }
-];
-
 export const TextEditor: React.FC<TextEditorProps> = ({
   textSet,
   onUpdate,
   onRemove,
   onDuplicate,
-  isDarkMode,
   imageDimensions
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
@@ -46,27 +33,25 @@ export const TextEditor: React.FC<TextEditorProps> = ({
   const maxY = imageDimensions?.height || 600;
 
   return (
-    <div className={`border rounded-lg ${isDarkMode ? 'border-gray-600 bg-gray-700' : 'border-gray-200 bg-white'}`}>
+    <div className={`border rounded-lg border-gray-200 bg-white`}>
       {/* Header */}
       <div 
-        className={`flex items-center justify-between p-4 cursor-pointer ${
-          isDarkMode ? 'hover:bg-gray-600' : 'hover:bg-gray-50'
-        }`}
+        className={`flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50`}
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <span className={`font-medium ${isDarkMode ? 'text-white' : 'text-gray-900'}`}>
+        <span className={`font-medium text-gray-900`}>
           {textSet.text || 'Text Set'}
         </span>
         {isExpanded ? (
-          <ChevronUp className={`w-4 h-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`} />
+          <ChevronUp className={`w-4 h-4 text-gray-500`} />
         ) : (
-          <ChevronDown className={`w-4 h-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`} />
+          <ChevronDown className={`w-4 h-4 text-gray-500`} />
         )}
       </div>
 
       {/* Content */}
       {isExpanded && (
-        <div className={`p-4 border-t space-y-4 ${isDarkMode ? 'border-gray-600' : 'border-gray-200'}`}>
+        <div className={`p-4 border-t space-y-4 border-gray-200`}>
           {/* Text Input */}
           <div>
             <input
@@ -74,27 +59,19 @@ export const TextEditor: React.FC<TextEditorProps> = ({
               value={textSet.text}
               onChange={(e) => handleUpdate({ text: e.target.value })}
               placeholder="Enter text..."
-              className={`w-full p-2 rounded border ${
-                isDarkMode 
-                  ? 'border-gray-600 bg-gray-800 text-white placeholder-gray-400' 
-                  : 'border-gray-300 bg-white text-gray-900 placeholder-gray-500'
-              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`w-full p-2 rounded border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500`}
             />
           </div>
 
           {/* Font Family */}
           <div>
-            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <label className={`block text-sm font-medium mb-1 text-gray-700`}>
               Font Family
             </label>
             <select
               value={textSet.fontFamily}
               onChange={(e) => handleUpdate({ fontFamily: e.target.value })}
-              className={`w-full p-2 rounded border ${
-                isDarkMode 
-                  ? 'border-gray-600 bg-gray-800 text-white' 
-                  : 'border-gray-300 bg-white text-gray-900'
-              } focus:outline-none focus:ring-2 focus:ring-blue-500`}
+              className={`w-full p-2 rounded border border-gray-300 bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500`}
             >
               {FONT_FAMILIES.map((font) => (
                 <option key={font} value={font}>
@@ -106,7 +83,7 @@ export const TextEditor: React.FC<TextEditorProps> = ({
 
           {/* Text Color */}
           <div>
-            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <label className={`block text-sm font-medium mb-1 text-gray-700`}>
               Text Color
             </label>
             <div className="flex items-center space-x-2 mb-2">
@@ -114,48 +91,15 @@ export const TextEditor: React.FC<TextEditorProps> = ({
                 type="color"
                 value={textSet.textColor}
                 onChange={(e) => handleUpdate({ textColor: e.target.value })}
-                className="w-8 h-8 rounded border cursor-pointer"
+                className="w-full h-8 rounded border cursor-pointer"
               />
-              <select
-                value={textSet.textColor}
-                onChange={(e) => handleUpdate({ textColor: e.target.value })}
-                className={`flex-1 p-2 rounded border ${
-                  isDarkMode 
-                    ? 'border-gray-600 bg-gray-800 text-white' 
-                    : 'border-gray-300 bg-white text-gray-900'
-                } focus:outline-none focus:ring-2 focus:ring-blue-500`}
-              >
-                {PRESET_COLORS.map((color) => (
-                  <option key={color.value} value={color.value}>
-                    {color.name}
-                  </option>
-                ))}
-              </select>
             </div>
           </div>
 
           {/* Position Controls */}
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-1 gap-3">
             <div>
-              <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-                X Position
-              </label>
-              <div className="flex items-center space-x-2">
-                <input
-                  type="range"
-                  min="0"
-                  max={maxX}
-                  value={textSet.position.x}
-                  onChange={(e) => handleUpdate({ position: { ...textSet.position, x: Number(e.target.value) } })}
-                  className="flex-1"
-                />
-                <span className={`text-sm w-12 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                  {Math.round(textSet.position.x)}
-                </span>
-              </div>
-            </div>
-            <div>
-              <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              <label className={`block text-sm font-medium mb-1 text-gray-700`}>
                 Y Position
               </label>
               <div className="flex items-center space-x-2">
@@ -167,8 +111,26 @@ export const TextEditor: React.FC<TextEditorProps> = ({
                   onChange={(e) => handleUpdate({ position: { ...textSet.position, y: Number(e.target.value) } })}
                   className="flex-1"
                 />
-                <span className={`text-sm w-12 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+                <span className={`text-sm w-12 text-gray-600`}>
                   {Math.round(textSet.position.y)}
+                </span>
+              </div>
+            </div>
+            <div>
+              <label className={`block text-sm font-medium mb-1 text-gray-700`}>
+                X Position
+              </label>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="range"
+                  min="0"
+                  max={maxX}
+                  value={textSet.position.x}
+                  onChange={(e) => handleUpdate({ position: { ...textSet.position, x: Number(e.target.value) } })}
+                  className="flex-1"
+                />
+                <span className={`text-sm w-12 text-gray-600`}>
+                  {Math.round(textSet.position.x)}
                 </span>
               </div>
             </div>
@@ -176,19 +138,19 @@ export const TextEditor: React.FC<TextEditorProps> = ({
 
           {/* Font Size */}
           <div>
-            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <label className={`block text-sm font-medium mb-1 text-gray-700`}>
               Font Size
             </label>
             <div className="flex items-center space-x-2">
               <input
                 type="range"
                 min="12"
-                max="200"
+                max="400"
                 value={textSet.fontSize}
                 onChange={(e) => handleUpdate({ fontSize: Number(e.target.value) })}
                 className="flex-1"
               />
-              <span className={`text-sm w-12 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <span className={`text-sm w-12 text-gray-600`}>
                 {textSet.fontSize}
               </span>
             </div>
@@ -196,7 +158,7 @@ export const TextEditor: React.FC<TextEditorProps> = ({
 
           {/* Font Weight */}
           <div>
-            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <label className={`block text-sm font-medium mb-1 text-gray-700`}>
               Font Weight
             </label>
             <div className="flex items-center space-x-2">
@@ -209,7 +171,7 @@ export const TextEditor: React.FC<TextEditorProps> = ({
                 onChange={(e) => handleUpdate({ fontWeight: Number(e.target.value) })}
                 className="flex-1"
               />
-              <span className={`text-sm w-12 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <span className={`text-sm w-12 text-gray-600`}>
                 {textSet.fontWeight}
               </span>
             </div>
@@ -217,7 +179,7 @@ export const TextEditor: React.FC<TextEditorProps> = ({
 
           {/* Text Opacity */}
           <div>
-            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <label className={`block text-sm font-medium mb-1 text-gray-700`}>
               Text Opacity
             </label>
             <div className="flex items-center space-x-2">
@@ -230,7 +192,7 @@ export const TextEditor: React.FC<TextEditorProps> = ({
                 onChange={(e) => handleUpdate({ opacity: Number(e.target.value) })}
                 className="flex-1"
               />
-              <span className={`text-sm w-12 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
+              <span className={`text-sm w-12 text-gray-600`}>
                 {textSet.opacity}
               </span>
             </div>
@@ -238,7 +200,7 @@ export const TextEditor: React.FC<TextEditorProps> = ({
 
           {/* Rotation */}
           <div>
-            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+            <label className={`block text-sm font-medium mb-1 text-gray-700`}>
               Rotation
             </label>
             <div className="flex items-center space-x-2">
@@ -250,67 +212,37 @@ export const TextEditor: React.FC<TextEditorProps> = ({
                 onChange={(e) => handleUpdate({ rotation: Number(e.target.value) })}
                 className="flex-1"
               />
-              <span className={`text-sm w-12 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                {textSet.rotation}°
+              <span className={`text-sm w-12 text-gray-600`}>
+                {Math.round(textSet.rotation)}°
               </span>
             </div>
           </div>
 
-          {/* Horizontal Tilt */}
-          <div>
-            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              Horizontal Tilt
+          {/* Text Shadow */}
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id={`text-shadow-${textSet.id}`}
+              checked={textSet.textShadow}
+              onChange={(e) => handleUpdate({ textShadow: e.target.checked })}
+              className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+            />
+            <label htmlFor={`text-shadow-${textSet.id}`} className="ml-2 block text-sm text-gray-900">
+              Enable Text Shadow
             </label>
-            <div className="flex items-center space-x-2">
-              <input
-                type="range"
-                min="-45"
-                max="45"
-                value={textSet.horizontalTilt}
-                onChange={(e) => handleUpdate({ horizontalTilt: Number(e.target.value) })}
-                className="flex-1"
-              />
-              <span className={`text-sm w-12 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                {textSet.horizontalTilt}°
-              </span>
-            </div>
           </div>
 
-          {/* Vertical Tilt */}
-          <div>
-            <label className={`block text-sm font-medium mb-1 ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              Vertical Tilt
-            </label>
-            <div className="flex items-center space-x-2">
-              <input
-                type="range"
-                min="-45"
-                max="45"
-                value={textSet.verticalTilt}
-                onChange={(e) => handleUpdate({ verticalTilt: Number(e.target.value) })}
-                className="flex-1"
-              />
-              <span className={`text-sm w-12 ${isDarkMode ? 'text-gray-300' : 'text-gray-600'}`}>
-                {textSet.verticalTilt}°
-              </span>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex space-x-2 pt-4">
+          {/* Actions */}
+          <div className="flex justify-end space-x-2 pt-4">
             <button
               onClick={() => onDuplicate(textSet.id)}
-              className={`flex-1 px-3 py-2 rounded text-sm font-medium ${
-                isDarkMode 
-                  ? 'bg-gray-600 text-white hover:bg-gray-500' 
-                  : 'bg-gray-800 text-white hover:bg-gray-700'
-              } transition-colors`}
+              className={`px-3 py-1 rounded text-sm border border-gray-300 text-gray-700 hover:bg-gray-100 transition-colors`}
             >
               Duplicate
             </button>
             <button
               onClick={() => onRemove(textSet.id)}
-              className="flex-1 px-3 py-2 bg-red-600 text-white rounded text-sm font-medium hover:bg-red-700 transition-colors"
+              className={`px-3 py-1 rounded text-sm bg-red-500 text-white hover:bg-red-600 transition-colors`}
             >
               Remove
             </button>
