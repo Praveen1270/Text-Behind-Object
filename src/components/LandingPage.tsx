@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from 'react';
+import PricingTable from './PricingTable';
 
 interface LandingPageProps {
   onGoViral?: () => void;
+  onSignIn?: () => void;
 }
 
 const sampleImages = [
@@ -13,9 +15,10 @@ const sampleImages = [
   '/landingpage/6.png',
   '/landingpage/7.png',
   '/landingpage/8.png',
+  '/landingpage/9.png',
 ];
 
-export default function LandingPage({ onGoViral }: LandingPageProps) {
+export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
 
   // Auto-scroll animation
@@ -44,10 +47,13 @@ export default function LandingPage({ onGoViral }: LandingPageProps) {
     <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center justify-center px-2" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Arial, sans-serif' }}>
       {/* Sticky Nav */}
       <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-20 w-[95vw] max-w-4xl rounded-full bg-white/80 backdrop-blur border border-gray-200 shadow flex items-center justify-between px-6 py-2 mb-4">
-        <span className="font-semibold text-base tracking-tight text-gray-900 px-2">Text Behind Object</span>
+        <span className="flex items-center gap-2 font-semibold text-base tracking-tight text-gray-900 px-2">
+          <img src="/landingpage/images.png" alt="Logo" className="w-6 h-6" style={{ display: 'inline-block' }} />
+          Text Behind Object
+        </span>
         <div className="flex items-center gap-3">
           <a href="#pricing" className="text-gray-700 font-medium text-sm hover:text-[#0071e3] transition px-2">Pricing</a>
-          <button className="border border-gray-300 rounded-full px-4 py-1 font-medium text-gray-700 text-sm hover:bg-gray-900 hover:text-white transition">Sign in</button>
+          <button className="border border-gray-300 rounded-full px-4 py-1 font-medium text-gray-700 text-sm hover:bg-gray-900 hover:text-white transition" onClick={onSignIn}>Sign in</button>
         </div>
       </nav>
       {/* Hero Card */}
@@ -84,9 +90,15 @@ export default function LandingPage({ onGoViral }: LandingPageProps) {
           >
             Go Viral Today
           </button>
-          <button className="bg-white border border-gray-300 rounded-lg px-6 py-2 font-semibold text-base shadow hover:bg-gray-100 transition w-full md:w-auto">
+          <a
+            href="https://youtu.be/aB65HsrbZos?si=e_TxT8rJ7AmIZEIG"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white border border-gray-300 rounded-lg px-6 py-2 font-semibold text-base shadow hover:bg-gray-100 transition w-full md:w-auto text-center flex items-center justify-center"
+            style={{ textDecoration: 'none' }}
+          >
             Watch Demo
-          </button>
+          </a>
         </div>
       </div>
       {/* Sample Images Gallery - Auto-scrolling slider */}
@@ -104,6 +116,10 @@ export default function LandingPage({ onGoViral }: LandingPageProps) {
             </div>
           ))}
         </div>
+      </div>
+      {/* Pricing Table */}
+      <div id="pricing" className="w-full flex justify-center mt-12 mb-24">
+        <PricingTable />
       </div>
       {/* Subtle BG Illustration */}
       <div className="fixed inset-0 pointer-events-none z-0">
