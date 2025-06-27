@@ -5,6 +5,7 @@ export interface TextSet {
   text: string;
   fontSize: number;
   fontFamily: string;
+  fontStyle: 'normal' | 'italic';
   textColor: string;
   fontWeight: number;
   opacity: number;
@@ -20,6 +21,7 @@ const createTextSet = (id?: string): TextSet => ({
   text: 'edit',
   fontSize: 48,
   fontFamily: 'Inter',
+  fontStyle: 'normal',
   textColor: '#FFFFFF',
   fontWeight: 700,
   opacity: 1,
