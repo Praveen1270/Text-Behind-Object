@@ -115,6 +115,82 @@ export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
           ))}
         </div>
       </div>
+
+      {/* Personal Message Section */}
+      <div className="w-full max-w-4xl mt-16 mb-8 rounded-3xl bg-white border border-gray-200 shadow-xl p-6 md:p-10">
+        <div className="flex flex-col md:flex-row items-start gap-6">
+          {/* Profile Photo */}
+          <div className="flex-shrink-0">
+            <img 
+              src="/landingpage/my.jpg" 
+              alt="Praveen" 
+              className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 border-[#0071e3]/20 shadow-lg"
+            />
+          </div>
+          
+          {/* Personal Message */}
+          <div className="flex-1 space-y-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              Hey there, 👋
+            </h2>
+            
+            <div className="text-gray-700 leading-relaxed space-y-3 text-sm md:text-base">
+              <p>
+                I hope you're doing well. I just wanted to share something personal with you today.
+              </p>
+              
+              <p>
+                For the past few weeks (or months), I've been on a journey—trying to build something from scratch with whatever resources I have. From writing late at night, debugging endlessly, to learning new tools and technologies without a proper setup—this has been far from easy.
+              </p>
+              
+              <p>
+                There have been countless moments of doubt, failure, and even thoughts of giving up. But what keeps me going is the dream that one day, something I build will help people, make an impact, and maybe even inspire someone else who's struggling like me.
+              </p>
+              
+              <p>
+                Right now, I'm working solo on my project and facing both technical and financial challenges. If you've ever found any value in what I do or just want to support a fellow creator on their journey, it would mean the world to me if you could support me here:
+              </p>
+              
+              <div className="bg-gradient-to-r from-[#0071e3] to-[#005bb5] rounded-lg p-4 text-white text-center">
+                <a 
+                  href="https://buymeacoffee.com/praveen187" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-lg font-semibold hover:underline flex items-center justify-center gap-2"
+                >
+                  ☕ Support My Journey
+                </a>
+              </div>
+              
+              <p>
+                Even a small gesture goes a long way. And if you can't support financially, just sharing this or dropping a kind message is more than enough for me.
+              </p>
+              
+              <p>
+                Thanks for taking the time to read this. I appreciate you.
+              </p>
+              
+              <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                <div>
+                  <p className="font-semibold text-gray-900">With gratitude,</p>
+                  <p className="text-[#0071e3] font-medium">Praveen</p>
+                </div>
+                <div className="text-right">
+                  <a 
+                    href="https://twitter.com/praveenthotakur" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-[#0071e3] hover:underline text-sm font-medium"
+                  >
+                    @praveenthotakur
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* Subtle BG Illustration */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <svg width="100%" height="100%" className="absolute left-0 top-0 opacity-10" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
