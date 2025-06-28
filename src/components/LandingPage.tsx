@@ -1,5 +1,4 @@
 import React, { useEffect, useRef } from 'react';
-import PricingTable from './PricingTable';
 
 interface LandingPageProps {
   onGoViral?: () => void;
@@ -52,7 +51,6 @@ export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
           Text Behind Object
         </span>
         <div className="flex items-center gap-3">
-          <a href="#pricing" className="text-gray-700 font-medium text-sm hover:text-[#0071e3] transition px-2">Pricing</a>
           <button className="border border-gray-300 rounded-full px-4 py-1 font-medium text-gray-700 text-sm hover:bg-gray-900 hover:text-white transition" onClick={onSignIn}>Sign in</button>
         </div>
       </nav>
@@ -116,10 +114,6 @@ export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
             </div>
           ))}
         </div>
-      </div>
-      {/* Pricing Table */}
-      <div id="pricing" className="w-full flex justify-center mt-12 mb-24">
-        <PricingTable />
       </div>
       {/* Subtle BG Illustration */}
       <div className="fixed inset-0 pointer-events-none z-0">
