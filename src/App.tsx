@@ -6,10 +6,10 @@ import { TextEditor } from './components/TextEditor';
 import { Canvas, CanvasHandle } from './components/Canvas';
 import { useImageProcessor } from './hooks/useImageProcessor';
 import { useTextState } from './hooks/useTextState';
-import { Analytics } from '@vercel/analytics/react';
 import LandingPage from './components/LandingPage';
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import { supabase } from './lib/utils';
+import { Analytics } from '@vercel/analytics/react';
 
 const CANVAS_WIDTH = 1080;
 const CANVAS_HEIGHT = 1080;
