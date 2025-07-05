@@ -13,6 +13,7 @@ import { Analytics } from '@vercel/analytics/react';
 import SignIn from './components/SignIn';
 import ProfileMenu from './components/ProfileMenu';
 import ProtectedRoute from './components/ProtectedRoute';
+import UpgradeButton from './components/UpgradeButton';
 
 const CANVAS_WIDTH = 1080;
 const CANVAS_HEIGHT = 1080;
@@ -35,6 +36,25 @@ function Editor() {
     duplicateTextSet
   } = useTextState();
   const canvasRef = useRef<CanvasHandle>(null);
+  const [hasPaid, setHasPaid] = useState(false);
+
+  useEffect(() => {
+    const fetchPaymentStatus = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) return;
+      const { data, error } = await supabase
+        .from('users')
+        .select('has_paid')
+        .eq('id', user.id)
+        .single();
+      if (error) {
+        setHasPaid(false);
+      } else {
+        setHasPaid(!!data?.has_paid);
+      }
+    };
+    fetchPaymentStatus();
+  }, []);
 
   const handleImageUpload = useCallback(async (file: File) => {
     const imageUrl = URL.createObjectURL(file);
@@ -102,6 +122,16 @@ function Editor() {
         previewDisplayHeight = maxWidth / aspect;
       }
     }
+  }
+
+  if (!hasPaid) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center bg-white">
+        <h2 className="text-2xl font-bold mb-4">Upgrade Required</h2>
+        <p className="mb-6 text-gray-600">You need to upgrade to use this app.</p>
+        <UpgradeButton />
+      </div>
+    );
   }
 
   return (
