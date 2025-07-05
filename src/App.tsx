@@ -8,122 +8,14 @@ import { useImageProcessor } from './hooks/useImageProcessor';
 import { useTextState } from './hooks/useTextState';
 import LandingPage from './components/LandingPage';
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import { supabase } from './lib/utils';
+import { supabase } from './lib/supabaseClient';
 import { Analytics } from '@vercel/analytics/react';
+import SignIn from './components/SignIn';
+import ProfileMenu from './components/ProfileMenu';
+import ProtectedRoute from './components/ProtectedRoute';
 
 const CANVAS_WIDTH = 1080;
 const CANVAS_HEIGHT = 1080;
-
-// Placeholder SignIn and SignUp components
-const SignIn = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const navigate = useNavigate();
-
-  const handleSignIn = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      setError(error.message);
-      return;
-    }
-    setSuccess('Welcome back! Redirecting...');
-    setTimeout(() => {
-      navigate('/editor');
-    }, 1000);
-  };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f5f5f7]">
-      <div className="bg-white rounded-3xl shadow-xl p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4 text-center">Sign In</h2>
-        <form onSubmit={handleSignIn} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-          />
-          {error && <div className="text-red-500 text-sm text-center">{error}</div>}
-          {success && <div className="text-green-600 text-sm text-center">{success}</div>}
-          <button type="submit" className="w-full bg-[#0071e3] hover:bg-[#005bb5] text-white font-semibold py-2 px-4 rounded-lg transition">Sign In</button>
-        </form>
-        <div className="text-center mt-4 text-sm">
-          Don't have an account? <a href="/signup" className="text-[#0071e3] hover:underline">Sign Up</a>
-        </div>
-      </div>
-    </div>
-  );
-};
-
-const SignUp = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const navigate = useNavigate();
-
-  const handleSignUp = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setSuccess('');
-    const { error } = await supabase.auth.signUp({ email, password });
-    if (error) {
-      setError(error.message);
-      return;
-    }
-    setSuccess('Account created! Please check your email to confirm.');
-    setTimeout(() => {
-      navigate('/signin');
-    }, 1500);
-  };
-
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-[#f5f5f7]">
-      <div className="bg-white rounded-3xl shadow-xl p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-4 text-center">Sign Up</h2>
-        <form onSubmit={handleSignUp} className="space-y-4">
-          <input
-            type="email"
-            placeholder="Email"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            required
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            className="w-full border border-gray-300 rounded-lg px-4 py-2"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            required
-          />
-          {error && <div className="text-red-500 text-sm text-center">{error}</div>}
-          {success && <div className="text-green-600 text-sm text-center">{success}</div>}
-          <button type="submit" className="w-full bg-[#0071e3] hover:bg-[#005bb5] text-white font-semibold py-2 px-4 rounded-lg transition">Sign Up</button>
-        </form>
-        <div className="text-center mt-4 text-sm">
-          Already have an account? <a href="/signin" className="text-[#0071e3] hover:underline">Sign In</a>
-        </div>
-      </div>
-    </div>
-  );
-};
 
 function Editor() {
   const [originalImage, setOriginalImage] = useState<string | null>(null);
@@ -143,18 +35,6 @@ function Editor() {
     duplicateTextSet
   } = useTextState();
   const canvasRef = useRef<CanvasHandle>(null);
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) navigate('/signin');
-    });
-    // Optionally, subscribe to auth changes
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!session) navigate('/signin');
-    });
-    return () => { listener?.subscription.unsubscribe(); };
-  }, [navigate]);
 
   const handleImageUpload = useCallback(async (file: File) => {
     const imageUrl = URL.createObjectURL(file);
@@ -243,6 +123,7 @@ function Editor() {
                   {isProcessing ? 'Saving...' : 'Save Image'}
                 </button>
               )}
+              <ProfileMenu />
             </div>
           </div>
         </div>
@@ -402,20 +283,24 @@ function App() {
   }
 
   return (
-    <Routes>
-      <Route path="/" element={
-        <div className="fade-in">
-          <LandingPage 
-            onGoViral={() => navigate('/signin')}
-            onSignIn={() => navigate('/signin')}
-          />
-        </div>
-      } />
-      <Route path="/signin" element={<SignIn />} />
-      <Route path="/signup" element={<SignUp />} />
-      <Route path="/editor" element={<Editor />} />
-      {/* Add your editor route here if needed */}
-    </Routes>
+    <>
+      <Routes>
+        <Route path="/" element={
+          <div className="fade-in">
+            <LandingPage 
+              onGoViral={() => navigate('/signin')}
+              onSignIn={() => navigate('/signin')}
+            />
+          </div>
+        } />
+        <Route path="/signin" element={<SignIn />} />
+        <Route path="/editor" element={
+          <ProtectedRoute>
+            <Editor />
+          </ProtectedRoute>
+        } />
+      </Routes>
+    </>
   );
 }
 
