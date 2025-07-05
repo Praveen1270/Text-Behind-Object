@@ -29,7 +29,7 @@ export default function UpgradeModal({ open, onClose }: UpgradeModalProps) {
         </ul>
         <button
           className="bg-[#0071e3] hover:bg-[#005bb5] text-white font-bold py-3 px-8 rounded-lg text-lg shadow w-full transition"
-          onClick={() => window.location.href = 'https://checkout.dodopayments.com/buy/pdt_jMRYvgBEhriwGIpeecAM1?quantity=1'}
+          onClick={() => window.location.href = 'https://checkout.dodopayments.com/buy/pdt_jMRYvgBEhriwGIpeecAM1?quantity=1&redirect_url=https://textbehindobject.xyz%2Feditor'}
         >
           Buy Now
         </button>
