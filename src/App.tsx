@@ -163,9 +163,11 @@ function Editor() {
         <div className="relative">
           {/* Main content overlay if not paid */}
           {!hasPaid && (
-            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white bg-opacity-80 pointer-events-auto">
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white bg-opacity-90 pointer-events-auto">
               <h2 className="text-2xl font-bold mb-4">Upgrade Required</h2>
-              <p className="mb-6 text-gray-600">You need to upgrade to use this app.</p>
+              <p className="mb-4 text-gray-600">You need to upgrade to use this app.</p>
+              <p className="mb-6 text-gray-700">Contact <span className="font-semibold text-blue-600">@praveenthotakur</span> on X (Twitter) for support or questions.</p>
+              <UpgradeButton />
             </div>
           )}
           {/* Main content (blurred if not paid) */}
