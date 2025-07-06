@@ -145,7 +145,17 @@ function Editor() {
               Text behind object editor
             </h1>
             <div className="flex items-center space-x-4">
-              {!hasPaid && <UpgradeButton />}
+              {/* Save button to the left of ProfileMenu */}
+              {hasPaid && originalImage && (
+                <button
+                  onClick={handleDownload}
+                  disabled={isProcessing}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold shadow hover:bg-blue-700 transition disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  <Download className="w-5 h-5" />
+                  {isProcessing ? 'Saving...' : 'Save Image'}
+                </button>
+              )}
               <ProfileMenu />
             </div>
           </div>
@@ -172,7 +182,7 @@ function Editor() {
             ) : (
               <div className="flex h-[calc(100vh-80px)]">
                 {/* Canvas Area */}
-                <div className="flex-1 flex items-center justify-center p-8">
+                <div className="flex-1 flex flex-col items-center justify-center p-8">
                   <Canvas
                     ref={canvasRef}
                     backgroundImage={backgroundImage}
