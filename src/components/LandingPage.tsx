@@ -99,7 +99,13 @@ export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
           </a>
         </div>
       </div>
-      {/* Sample Images Gallery - Auto-scrolling slider */}
+      {/* Demo Video Above Images */}
+      <div className="w-full max-w-3xl mb-8 flex justify-center">
+        <video controls className="w-full rounded-lg shadow-lg" style={{ maxHeight: 400 }}>
+          <source src="/landingpage/demo video.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
       <div className="w-full max-w-5xl">
         <div ref={sliderRef} className="flex flex-row gap-6 overflow-x-auto pb-1 scroll-snap-x snap-mandatory hide-scrollbar">
           {sampleImages.map((img, idx) => (
@@ -115,7 +121,6 @@ export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
           ))}
         </div>
       </div>
-
       {/* Subtle BG Illustration */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <svg width="100%" height="100%" className="absolute left-0 top-0 opacity-10" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
