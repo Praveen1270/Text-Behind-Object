@@ -17,6 +17,15 @@ const sampleImages = [
   '/landingpage/9.png',
 ];
 
+// Swap 2nd row 2nd/3rd images with 3rd row 2nd/3rd images
+const reorderedImages = [...sampleImages];
+[reorderedImages[4], reorderedImages[7]] = [reorderedImages[7], reorderedImages[4]];
+[reorderedImages[5], reorderedImages[8]] = [reorderedImages[8], reorderedImages[5]];
+// Move 2nd row, 2nd image to 1st place of 2nd row
+const reorderedImages2 = [...reorderedImages];
+const imgToMove = reorderedImages2.splice(4, 1)[0];
+reorderedImages2.splice(3, 0, imgToMove);
+
 export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
   const sliderRef = useRef<HTMLDivElement>(null);
 
@@ -43,83 +52,52 @@ export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center justify-center px-2" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Arial, sans-serif' }}>
-      {/* Sticky Nav */}
-      <nav className="fixed top-4 left-1/2 -translate-x-1/2 z-20 w-[95vw] max-w-4xl rounded-full bg-white/80 backdrop-blur border border-gray-200 shadow flex items-center justify-between px-6 py-2 mb-4">
-        <span className="flex items-center gap-2 font-semibold text-base tracking-tight text-gray-900 px-2">
-          <img src="/landingpage/images.png" alt="Logo" className="w-6 h-6" style={{ display: 'inline-block' }} />
-          Text Behind Object
-        </span>
-        <div className="flex items-center gap-3">
-          <button className="border border-gray-300 rounded-full px-4 py-1 font-medium text-gray-700 text-sm hover:bg-gray-900 hover:text-white transition" onClick={onSignIn}>Sign in</button>
-        </div>
-      </nav>
-      {/* Hero Card */}
-      <div className="w-full max-w-4xl mt-32 mb-8 rounded-3xl bg-white border border-gray-200 shadow-xl p-6 md:p-10 flex flex-col items-center">
-        {/* Headline */}
-        <h1 className="text-5xl md:text-6xl font-extrabold text-center text-gray-900 leading-tight mb-8" style={{ letterSpacing: '-0.01em' }}>
-          Create viral content<br />
-          by adding <span className="font-playfair-display underline decoration-4 decoration-[#0071e3] underline-offset-8">text behind</span> your images.
+    <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center justify-center px-2" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Arial, sans-serif' }}>
+      {/* Hero Section - No card effect */}
+      <div className="w-full max-w-4xl mb-8 flex flex-col items-center">
+        {/* Headline - Styled, less bold, single line, system font */}
+        <h1 className="text-5xl md:text-6xl font-semibold text-center text-gray-900 leading-tight mb-12 mt-20 flex-nowrap whitespace-nowrap flex items-center justify-center gap-2" style={{ letterSpacing: '-0.01em', fontFamily: '-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Arial, sans-serif' }}>
+          <span>Create</span>
+          <span className="bg-black text-white px-6 py-2 rounded-lg mx-2" style={{ fontWeight: 600, fontSize: '1.1em', lineHeight: 1 }}>
+            text-behind-object
+          </span>
+          <span>designs easily</span>
         </h1>
         {/* Subheadline */}
-        <p className="text-center text-sm text-gray-600 mb-6 max-w-2xl mx-auto font-normal">
-          Instantly make beautiful YouTube thumbnails and social posts. No design skills needed—just upload, customize, and go viral.
+        <p className="text-center text-xl text-gray-900 mb-8 max-w-2xl mx-auto font-semibold">
+          300,000+ text behind image designs created
         </p>
-        {/* Features Row */}
-        <div className="flex flex-col sm:flex-row justify-center gap-4 mb-6 w-full text-xs text-gray-700">
-          <div className="flex flex-col items-center">
-            <span className="font-medium">1000+ Images</span>
-            <span className="text-[10px] text-gray-400 mt-1">Unlimited creative options</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="font-medium">Full Customization</span>
-            <span className="text-[10px] text-gray-400 mt-1">Fonts, colors, effects & more</span>
-          </div>
-          <div className="flex flex-col items-center">
-            <span className="font-medium">New Features</span>
-            <span className="text-[10px] text-gray-400 mt-1">Early access & updates</span>
-          </div>
-        </div>
-        {/* CTA Buttons */}
-        <div className="flex flex-col md:flex-row justify-center gap-2 mt-1 w-full">
+        {/* CTA Button */}
+        <div className="flex justify-center w-full">
           <button
-            className="bg-[#0071e3] text-white rounded-lg px-6 py-2 font-semibold text-base shadow hover:bg-[#005bb5] transition w-full md:w-auto"
+            className="bg-white border border-gray-300 rounded-full px-8 py-3 font-semibold text-lg shadow hover:bg-gray-100 transition text-gray-900"
             onClick={onGoViral}
           >
-            Go Viral Today
+            Open the app
           </button>
-          <a
-            href="https://youtu.be/aB65HsrbZos?si=e_TxT8rJ7AmIZEIG"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-white border border-gray-300 rounded-lg px-6 py-2 font-semibold text-base shadow hover:bg-gray-100 transition w-full md:w-auto text-center flex items-center justify-center"
-            style={{ textDecoration: 'none' }}
-          >
-            Watch Demo
-          </a>
         </div>
       </div>
-      {/* Demo Video Above Images */}
-      <div className="w-full max-w-3xl mb-8 flex justify-center">
-        <video controls className="w-full rounded-lg shadow-lg" style={{ maxHeight: 400 }}>
-          <source src="/landingpage/demo video.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
-      <div className="w-full max-w-5xl">
-        <div ref={sliderRef} className="flex flex-row gap-6 overflow-x-auto pb-1 scroll-snap-x snap-mandatory hide-scrollbar">
-          {sampleImages.map((img, idx) => (
-            <div key={idx} className="flex items-center justify-center min-w-[300px] max-w-[400px] snap-start">
+      {/* Images Grid - 3 per row, equal and small spacing, no white border, original size */}
+      <div className="w-full max-w-5xl mb-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+          {reorderedImages2.map((img, idx) => (
+            <div key={idx} className="flex items-center justify-center">
               <img
                 src={img}
                 alt={`Sample ${idx + 1}`}
-                className="object-contain w-full max-h-80 mb-4 transition-transform duration-200 hover:scale-105"
+                className="object-contain max-w-full max-h-80 mb-0 transition-transform duration-200 hover:scale-105"
                 loading="lazy"
                 style={{ display: 'block' }}
               />
             </div>
           ))}
         </div>
+      </div>
+      {/* Footer with copyright and Twitter link */}
+      <div className="w-full flex flex-col items-center mt-8 mb-4">
+        <p className="text-center text-base text-gray-500" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Arial, sans-serif' }}>
+          2025 <a href="https://twitter.com/Praveenthotakur" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">@Praveenthotakur</a> - All Rights Reserved - Created by Praveenthotakuri
+        </p>
       </div>
       {/* Subtle BG Illustration */}
       <div className="fixed inset-0 pointer-events-none z-0">
