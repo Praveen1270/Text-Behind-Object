@@ -59,14 +59,14 @@ export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
       {/* Pricing Card removed from landing page, now only shown in modal via header */}
       {/* Hero Section - Responsive */}
       <div className="w-full max-w-4xl mb-8 flex flex-col items-center px-2 sm:px-6">
-        <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-semibold text-center text-gray-900 leading-tight mb-6 sm:mb-10 mt-8 sm:mt-16 flex flex-col items-center justify-center gap-2" style={{ letterSpacing: '-0.01em', fontFamily: '-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Arial, sans-serif' }}>
+        <h1 className="text-base xs:text-lg sm:text-xl md:text-2xl font-semibold text-center text-gray-900 leading-tight mb-4 sm:mb-8 mt-6 sm:mt-12 flex flex-col items-center justify-center gap-2" style={{ letterSpacing: '-0.01em', fontFamily: '-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Arial, sans-serif' }}>
           <span>
             <span>Create </span>
-            <span className="bg-black text-white px-3 py-1 sm:px-5 sm:py-2 rounded-lg mx-1 sm:mx-2 inline-block" style={{ fontWeight: 600, fontSize: '1em', lineHeight: 1 }}>
+            <span className="bg-black text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-lg mx-1 sm:mx-2 inline-block" style={{ fontWeight: 600, fontSize: '0.9em', lineHeight: 1 }}>
               text-behind-object
             </span>
           </span>
-          <span>designs easily</span>
+          <span style={{ fontSize: '0.95em' }}>designs easily</span>
         </h1>
         <p className="text-center text-sm sm:text-base md:text-xl text-gray-900 mb-4 sm:mb-6 max-w-xs sm:max-w-2xl mx-auto font-semibold">
           1,000+ text behind object designs created
