@@ -80,7 +80,7 @@ export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
               <img
                 src={img}
                 alt={`Sample ${idx + 1}`}
-                className="object-contain max-w-full max-h-40 sm:max-h-60 md:max-h-80 mb-0 transition-transform duration-200 hover:scale-105"
+                className="object-contain max-w-full max-h-56 sm:max-h-60 md:max-h-80 mb-0 transition-transform duration-200 hover:scale-105"
                 loading="lazy"
                 style={{ display: 'block' }}
               />
