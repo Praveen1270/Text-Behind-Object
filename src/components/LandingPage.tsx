@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import PricingCard from './PricingCard';
 
 interface LandingPageProps {
   onGoViral?: () => void;
@@ -53,6 +54,10 @@ export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
 
   return (
     <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center justify-center px-2 sm:px-4" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Arial, sans-serif' }}>
+      {/* Pricing Card at the top */}
+      <div className="w-full flex justify-center mt-8 mb-4">
+        <PricingCard onSignIn={onSignIn} showSignInButton={true} />
+      </div>
       {/* Hero Section - No card effect */}
       <div className="w-full max-w-4xl mb-8 flex flex-col items-center px-2 sm:px-6">
         {/* Headline - Responsive font and spacing, two lines on mobile */}
@@ -69,15 +74,6 @@ export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
         <p className="text-center text-base sm:text-xl text-gray-900 mb-6 sm:mb-8 max-w-2xl mx-auto font-semibold">
           1,000+ text behind object designs created
         </p>
-        {/* CTA Button - Responsive */}
-        <div className="flex justify-center w-full">
-          <button
-            className="bg-white border border-gray-300 rounded-full px-6 py-2 sm:px-8 sm:py-3 font-semibold text-base sm:text-lg shadow hover:bg-gray-100 transition text-gray-900"
-            onClick={onGoViral}
-          >
-            Open the app
-          </button>
-        </div>
       </div>
       {/* Images Grid - Responsive columns and spacing */}
       <div className="w-full max-w-5xl mb-8 px-1 sm:px-4">
