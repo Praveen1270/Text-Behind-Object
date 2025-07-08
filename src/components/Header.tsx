@@ -12,7 +12,7 @@ export default function Header({ onSignIn }: HeaderProps) {
     <header className="w-full flex items-center justify-between px-4 py-3 bg-white border-b border-gray-200">
       {/* Brand */}
       <div className="flex items-center">
-        <span className="text-2xl font-bold tracking-tight" style={{ color: '#0071e3', fontFamily: '-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Arial, sans-serif' }}>
+        <span className="font-bold tracking-tight text-lg sm:text-xl md:text-2xl" style={{ color: '#0071e3', fontFamily: '-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Arial, sans-serif' }}>
           text-behind-object
         </span>
       </div>

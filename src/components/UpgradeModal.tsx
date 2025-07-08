@@ -21,7 +21,7 @@ export default function UpgradeModal({ open, onClose, hideClose = false }: Upgra
             ×
           </button>
         )}
-        <PricingCard showSignInButton={false} showBuyButton={false} />
+        <PricingCard showSignInButton={false} showBuyButton={true} />
       </div>
     </div>
   );
