@@ -1,11 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import PricingCard from './PricingCard';
+import React from 'react';
 import Header from './Header';
-
-interface LandingPageProps {
-  onGoViral?: () => void;
-  onSignIn?: () => void;
-}
 
 const sampleImages = [
   '/landingpage/1.png',
@@ -19,97 +13,54 @@ const sampleImages = [
   '/landingpage/9.png',
 ];
 
-// Swap 2nd row 2nd/3rd images with 3rd row 2nd/3rd images
-const reorderedImages = [...sampleImages];
-[reorderedImages[4], reorderedImages[7]] = [reorderedImages[7], reorderedImages[4]];
-[reorderedImages[5], reorderedImages[8]] = [reorderedImages[8], reorderedImages[5]];
-// Move 2nd row, 2nd image to 1st place of 2nd row
-const reorderedImages2 = [...reorderedImages];
-const imgToMove = reorderedImages2.splice(4, 1)[0];
-reorderedImages2.splice(3, 0, imgToMove);
+interface LandingPageProps {
+  onGoViral?: () => void;
+  onSignIn?: () => void;
+}
 
 export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
-  const sliderRef = useRef<HTMLDivElement>(null);
-
-  // Auto-scroll animation
-  useEffect(() => {
-    const slider = sliderRef.current;
-    if (!slider) return;
-    let frame: number;
-    let scrollAmount = 0;
-    const speed = 1; // px per frame
-    function animate() {
-      if (!slider) return;
-      if (slider.scrollLeft + slider.offsetWidth >= slider.scrollWidth) {
-        slider.scrollLeft = 0;
-        scrollAmount = 0;
-      } else {
-        slider.scrollLeft += speed;
-        scrollAmount += speed;
-      }
-      frame = requestAnimationFrame(animate);
-    }
-    frame = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(frame);
-  }, []);
-
   return (
-    <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center justify-center px-2 sm:px-4" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Arial, sans-serif' }}>
+    <div className="min-h-screen bg-white flex flex-col items-center" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Arial, sans-serif' }}>
       <Header onSignIn={onSignIn || (() => {})} />
-      {/* Pricing Card removed from landing page, now only shown in modal via header */}
-      {/* Hero Section - Responsive */}
-      <div className="w-full max-w-4xl mb-8 flex flex-col items-center px-2 sm:px-6">
-        <h1 className="text-base xs:text-lg sm:text-xl md:text-2xl font-semibold text-center text-gray-900 leading-tight mb-4 sm:mb-8 mt-6 sm:mt-12 flex flex-col items-center justify-center gap-2" style={{ letterSpacing: '-0.01em', fontFamily: '-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Arial, sans-serif' }}>
-          <span>
-            <span>Create </span>
-            <span className="bg-black text-white px-2 py-0.5 sm:px-3 sm:py-1 rounded-lg mx-1 sm:mx-2 inline-block" style={{ fontWeight: 600, fontSize: '0.9em', lineHeight: 1 }}>
-              text-behind-object
-            </span>
-          </span>
-          <span style={{ fontSize: '0.95em' }}>designs easily</span>
+      {/* Hero Section */}
+      <section className="flex flex-col items-center justify-center py-16 w-full">
+        <h1 className="text-4xl sm:text-5xl md:text-6xl font-extrabold text-center text-black leading-tight mb-4" style={{ letterSpacing: '-0.01em' }}>
+          Auto-insert <span className="text-[#0071e3] underline decoration-4 decoration-[#0071e3]">viral text</span> into your images
         </h1>
-        <p className="text-center text-sm sm:text-base md:text-xl text-gray-900 mb-4 sm:mb-6 max-w-xs sm:max-w-2xl mx-auto font-semibold">
-          1,000+ text behind object designs created
+        <p className="mt-4 text-sm sm:text-base text-center text-[#6e6e73] max-w-2xl font-medium">
+          Create POV-style YouTube thumbnails and social media posts that grab attention and blow up your feed.
         </p>
-      </div>
-      {/* Images Grid - Responsive columns and spacing */}
-      <div className="w-full max-w-5xl mb-8 px-1 sm:px-4">
-        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4">
-          {reorderedImages2.map((img, idx) => (
-            <div key={idx} className="flex items-center justify-center">
-              <img
-                src={img}
-                alt={`Sample ${idx + 1}`}
-                className="object-contain max-w-full max-h-56 sm:max-h-60 md:max-h-80 mb-0 transition-transform duration-200 hover:scale-105"
-                loading="lazy"
-                style={{ display: 'block' }}
-              />
-            </div>
-          ))}
+        <div className="flex gap-4 mt-8">
+          <button
+            className="bg-[#0071e3] hover:bg-[#005bb5] text-white px-4 py-2 rounded-lg font-bold text-sm shadow transition-colors"
+            onClick={onSignIn}
+            type="button"
+          >
+            Try it now
+          </button>
+          <a
+            href="https://youtu.be/aB65HsrbZos?si=zyH_WSxMc0bdVWRV"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="bg-white border border-[#0071e3] text-[#0071e3] px-4 py-2 rounded-lg font-bold text-sm shadow transition-colors hover:bg-[#f0f8ff] flex items-center justify-center"
+            style={{ textDecoration: 'none' }}
+          >
+            Watch Demo
+          </a>
         </div>
-      </div>
-      {/* Footer - Responsive font and spacing */}
-      <div className="w-full flex flex-col items-center mt-6 mb-4 px-2">
-        <p className="text-center text-sm sm:text-base text-gray-500" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Arial, sans-serif' }}>
-          2025 <a href="https://twitter.com/Praveenthotakur" target="_blank" rel="noopener noreferrer" className="underline hover:text-blue-600">@Praveenthotakur</a> - All Rights Reserved - Created by Praveenthotakuri
-        </p>
-      </div>
-      {/* Subtle BG Illustration */}
-      <div className="fixed inset-0 pointer-events-none z-0">
-        <svg width="100%" height="100%" className="absolute left-0 top-0 opacity-10" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="650" cy="100" r="120" fill="url(#paint0_radial)" />
-          <circle cx="200" cy="500" r="180" fill="url(#paint1_radial)" />
-          <defs>
-            <radialGradient id="paint0_radial" cx="0" cy="0" r="1" gradientTransform="rotate(90 275 375) scale(120)" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#a5b4fc" />
-              <stop offset="1" stopColor="#f9fafb" stopOpacity="0" />
-            </radialGradient>
-            <radialGradient id="paint1_radial" cx="0" cy="0" r="1" gradientTransform="rotate(90 350 150) scale(180)" gradientUnits="userSpaceOnUse">
-              <stop stopColor="#f472b6" />
-              <stop offset="1" stopColor="#f9fafb" stopOpacity="0" />
-            </radialGradient>
-          </defs>
-        </svg>
+      </section>
+      {/* Gallery Section */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-8 px-4 w-full max-w-6xl">
+        {sampleImages.map((img, idx) => (
+          <div key={idx}>
+            <img
+              src={img}
+              alt={`Sample ${idx + 1}`}
+              className="rounded-xl object-contain w-full h-64"
+              loading="lazy"
+            />
+          </div>
+        ))}
       </div>
     </div>
   );
