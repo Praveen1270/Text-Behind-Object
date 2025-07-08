@@ -4,9 +4,11 @@ import { Button } from './ui/button';
 interface PricingCardProps {
   onSignIn?: () => void;
   showSignInButton?: boolean;
+  requireSignIn?: boolean;
+  showBuyButton?: boolean;
 }
 
-export default function PricingCard({ onSignIn, showSignInButton = true }: PricingCardProps) {
+export default function PricingCard({ onSignIn, showSignInButton = true, requireSignIn = false, showBuyButton = true }: PricingCardProps) {
   return (
     <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-md w-full p-8 flex flex-col items-center mx-auto">
       <h2 className="text-3xl font-extrabold text-gray-900 mb-2 text-center">Creator Plan</h2>
@@ -31,12 +33,18 @@ export default function PricingCard({ onSignIn, showSignInButton = true }: Prici
           Sign In
         </Button>
       )}
-      <Button
-        className="w-full bg-[#0071e3] hover:bg-[#005bb5] text-white font-bold py-3 px-8 rounded-lg text-lg shadow transition"
-        onClick={() => window.location.href = 'https://checkout.dodopayments.com/buy/pdt_jMRYvgBEhriwGIpeecAM1?quantity=1&redirect_url=https://textbehindobject.xyz%2Feditor'}
-      >
-        Buy Now
-      </Button>
+      {showBuyButton && (
+        <Button
+          className="w-full bg-[#0071e3] hover:bg-[#005bb5] text-white font-bold py-3 px-8 rounded-lg text-lg shadow transition"
+          onClick={() => window.location.href = 'https://checkout.dodopayments.com/buy/pdt_jMRYvgBEhriwGIpeecAM1?quantity=1&redirect_url=https://textbehindobject.xyz%2Feditor'}
+          disabled={requireSignIn}
+        >
+          Buy Now
+        </Button>
+      )}
+      {requireSignIn && (
+        <div className="text-xs text-gray-500 text-center mt-2">Please sign in to purchase the Creator Plan.</div>
+      )}
     </div>
   );
 } 
