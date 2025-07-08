@@ -164,7 +164,7 @@ function Editor() {
         <div className="relative">
           {/* Main content overlay if not paid */}
           {!hasPaid && (
-            <UpgradeModal open={true} onClose={() => {}} />
+            <UpgradeModal open={true} onClose={() => {}} hideClose={true} />
           )}
           {/* Main content (blurred if not paid) */}
           <div className={hasPaid ? '' : 'filter blur-sm pointer-events-none select-none'}>

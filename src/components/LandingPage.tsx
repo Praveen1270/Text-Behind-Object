@@ -54,35 +54,33 @@ export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
   }, []);
 
   return (
-    <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center justify-center px-2 sm:px-4" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Arial, sans-serif' }}>
+    <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center justify-center px-2 sm:px-4" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Arial, sans-serif' }}>
       <Header onSignIn={onSignIn || (() => {})} />
       {/* Pricing Card removed from landing page, now only shown in modal via header */}
-      {/* Hero Section - No card effect */}
+      {/* Hero Section - Responsive */}
       <div className="w-full max-w-4xl mb-8 flex flex-col items-center px-2 sm:px-6">
-        {/* Headline - Responsive font and spacing, two lines on mobile */}
-        <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-semibold text-center text-gray-900 leading-tight mb-8 sm:mb-12 mt-10 sm:mt-20 flex flex-col items-center justify-center gap-2" style={{ letterSpacing: '-0.01em', fontFamily: '-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Arial, sans-serif' }}>
+        <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-semibold text-center text-gray-900 leading-tight mb-6 sm:mb-10 mt-8 sm:mt-16 flex flex-col items-center justify-center gap-2" style={{ letterSpacing: '-0.01em', fontFamily: '-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Arial, sans-serif' }}>
           <span>
             <span>Create </span>
-            <span className="bg-black text-white px-4 py-1 sm:px-6 sm:py-2 rounded-lg mx-1 sm:mx-2 inline-block" style={{ fontWeight: 600, fontSize: '1em', lineHeight: 1 }}>
+            <span className="bg-black text-white px-3 py-1 sm:px-5 sm:py-2 rounded-lg mx-1 sm:mx-2 inline-block" style={{ fontWeight: 600, fontSize: '1em', lineHeight: 1 }}>
               text-behind-object
             </span>
           </span>
           <span>designs easily</span>
         </h1>
-        {/* Subheadline - Responsive font */}
-        <p className="text-center text-base sm:text-xl text-gray-900 mb-6 sm:mb-8 max-w-2xl mx-auto font-semibold">
+        <p className="text-center text-sm sm:text-base md:text-xl text-gray-900 mb-4 sm:mb-6 max-w-xs sm:max-w-2xl mx-auto font-semibold">
           1,000+ text behind object designs created
         </p>
       </div>
       {/* Images Grid - Responsive columns and spacing */}
       <div className="w-full max-w-5xl mb-8 px-1 sm:px-4">
-        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4">
+        <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-2 sm:gap-4">
           {reorderedImages2.map((img, idx) => (
             <div key={idx} className="flex items-center justify-center">
               <img
                 src={img}
                 alt={`Sample ${idx + 1}`}
-                className="object-contain max-w-full max-h-60 sm:max-h-80 mb-0 transition-transform duration-200 hover:scale-105"
+                className="object-contain max-w-full max-h-40 sm:max-h-60 md:max-h-80 mb-0 transition-transform duration-200 hover:scale-105"
                 loading="lazy"
                 style={{ display: 'block' }}
               />
