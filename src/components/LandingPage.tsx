@@ -65,7 +65,7 @@ export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
         </h1>
         {/* Subheadline */}
         <p className="text-center text-xl text-gray-900 mb-8 max-w-2xl mx-auto font-semibold">
-          300,000+ text behind image designs created
+          1,000+ text behind object designs created
         </p>
         {/* CTA Button */}
         <div className="flex justify-center w-full">
