@@ -55,16 +55,16 @@ export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
     <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center justify-center px-2 sm:px-4" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Arial, sans-serif' }}>
       {/* Hero Section - No card effect */}
       <div className="w-full max-w-4xl mb-8 flex flex-col items-center px-2 sm:px-6">
-        {/* Headline - Responsive font and spacing, single line on mobile */}
-        <div className="w-full overflow-x-auto flex justify-center">
-          <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-semibold text-center text-gray-900 leading-tight mb-8 sm:mb-12 mt-10 sm:mt-20 flex-nowrap whitespace-nowrap flex items-center justify-center gap-2 min-w-max" style={{ letterSpacing: '-0.01em', fontFamily: '-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Arial, sans-serif' }}>
-            <span>Create</span>
-            <span className="bg-black text-white px-4 py-1 sm:px-6 sm:py-2 rounded-lg mx-1 sm:mx-2" style={{ fontWeight: 600, fontSize: '1em', lineHeight: 1 }}>
+        {/* Headline - Responsive font and spacing, two lines on mobile */}
+        <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-semibold text-center text-gray-900 leading-tight mb-8 sm:mb-12 mt-10 sm:mt-20 flex flex-col items-center justify-center gap-2" style={{ letterSpacing: '-0.01em', fontFamily: '-apple-system, BlinkMacSystemFont, \"San Francisco\", \"Segoe UI\", Roboto, Arial, sans-serif' }}>
+          <span>
+            <span>Create </span>
+            <span className="bg-black text-white px-4 py-1 sm:px-6 sm:py-2 rounded-lg mx-1 sm:mx-2 inline-block" style={{ fontWeight: 600, fontSize: '1em', lineHeight: 1 }}>
               text-behind-object
             </span>
-            <span>designs easily</span>
-          </h1>
-        </div>
+          </span>
+          <span>designs easily</span>
+        </h1>
         {/* Subheadline - Responsive font */}
         <p className="text-center text-base sm:text-xl text-gray-900 mb-6 sm:mb-8 max-w-2xl mx-auto font-semibold">
           1,000+ text behind object designs created
