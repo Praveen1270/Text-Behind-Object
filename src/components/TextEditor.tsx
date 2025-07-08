@@ -165,13 +165,13 @@ export const TextEditor: React.FC<TextEditorProps> = ({
   };
 
   return (
-    <div className={cn("border rounded-lg border-gray-200 bg-white shadow-sm text-editor-enter-active", isExpanded && "text-movement")}>
+    <div className={cn("border rounded-lg border-gray-200 bg-white shadow-sm text-editor-enter-active p-2 sm:p-4 w-full max-w-xl mx-auto", isExpanded && "text-movement")}>
       {/* Header */}
       <div 
-        className="flex items-center justify-between p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+        className="flex items-center justify-between p-2 sm:p-4 cursor-pointer hover:bg-gray-50 transition-colors"
         onClick={() => setIsExpanded(!isExpanded)}
       >
-        <span className="font-medium text-gray-900 truncate">
+        <span className="font-medium text-gray-900 truncate text-base sm:text-lg">
           {textSet.text || 'Text Set'}
         </span>
         <div className="flex items-center gap-2">
@@ -185,7 +185,7 @@ export const TextEditor: React.FC<TextEditorProps> = ({
 
       {/* Content */}
       {isExpanded && (
-        <div className="p-4 border-t space-y-4 border-gray-200">
+        <div className="p-2 sm:p-4 border-t space-y-4 border-gray-200">
           {/* Text Input */}
           <div className="space-y-2">
             <Label htmlFor={`text-${textSet.id}`}>Text Content</Label>
@@ -195,7 +195,7 @@ export const TextEditor: React.FC<TextEditorProps> = ({
               value={textSet.text}
               onChange={(e) => handleUpdate({ text: e.target.value })}
               placeholder="Enter text..."
-              className="w-full p-2 rounded-md border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+              className="w-full p-2 rounded-md border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-base sm:text-lg"
             />
           </div>
 

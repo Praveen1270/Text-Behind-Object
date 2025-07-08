@@ -306,7 +306,7 @@ export const Canvas = forwardRef<CanvasHandle, CanvasProps>(({
   }, []);
 
   return (
-    <div className={cn("relative canvas-hover", isDragging && "text-movement")} style={{ width: previewDisplayWidth, height: previewDisplayHeight }}>
+    <div className={cn("relative canvas-hover w-full max-w-full overflow-x-auto p-2 sm:p-0", isDragging && "text-movement")} style={{ width: '100%', maxWidth: previewDisplayWidth, height: previewDisplayHeight }}>
       {/* Main display canvas */}
       <canvas
         ref={canvasRef}
@@ -314,7 +314,8 @@ export const Canvas = forwardRef<CanvasHandle, CanvasProps>(({
         height={canvasHeight}
         style={{ 
           display: 'block', 
-          width: previewDisplayWidth, 
+          width: '100%', 
+          maxWidth: previewDisplayWidth, 
           height: previewDisplayHeight, 
           background: '#fff', 
           borderRadius: 12, 
