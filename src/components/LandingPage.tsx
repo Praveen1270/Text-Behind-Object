@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import PricingCard from './PricingCard';
+import Header from './Header';
 
 interface LandingPageProps {
   onGoViral?: () => void;
@@ -54,10 +55,8 @@ export default function LandingPage({ onGoViral, onSignIn }: LandingPageProps) {
 
   return (
     <div className="min-h-screen bg-[#f5f5f7] flex flex-col items-center justify-center px-2 sm:px-4" style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "San Francisco", "Segoe UI", Roboto, Arial, sans-serif' }}>
-      {/* Pricing Card at the top */}
-      <div className="w-full flex justify-center mt-8 mb-4">
-        <PricingCard onSignIn={onSignIn} showSignInButton={true} />
-      </div>
+      <Header onSignIn={onSignIn || (() => {})} />
+      {/* Pricing Card removed from landing page, now only shown in modal via header */}
       {/* Hero Section - No card effect */}
       <div className="w-full max-w-4xl mb-8 flex flex-col items-center px-2 sm:px-6">
         {/* Headline - Responsive font and spacing, two lines on mobile */}
