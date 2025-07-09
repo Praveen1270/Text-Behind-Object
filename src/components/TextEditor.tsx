@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ChevronUp, ChevronDown, Copy, Trash2 } from 'lucide-react';
 import { TextSet } from '../hooks/useTextState';
 import { Slider } from './ui/slider';
@@ -6,6 +6,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Checkbox } from './ui/checkbox';
 import { Label } from './ui/label';
 import { cn } from '../lib/utils';
+import { supabase } from '../lib/supabaseClient';
+import UpgradeModal from './UpgradeModal';
 
 interface TextEditorProps {
   textSet: TextSet;
@@ -128,6 +130,28 @@ export const TextEditor: React.FC<TextEditorProps> = ({
   imageDimensions
 }) => {
   const [isExpanded, setIsExpanded] = useState(true);
+  // Add state for credits and user
+  const [credits, setCredits] = useState<number | null>(null);
+  const [user, setUser] = useState<any>(null);
+  const [showUpgrade, setShowUpgrade] = useState(false);
+
+  useEffect(() => {
+    const fetchUserAndCredits = async () => {
+      const { data: { user } } = await supabase.auth.getUser();
+      setUser(user);
+      if (user) {
+        const { data } = await supabase
+          .from('profiles')
+          .select('credits')
+          .eq('id', user.id)
+          .single();
+        if (data) setCredits(data.credits);
+      } else {
+        setCredits(null);
+      }
+    };
+    fetchUserAndCredits();
+  }, []);
 
   const handleUpdate = (updates: Partial<TextSet>) => {
     onUpdate(textSet.id, updates);
@@ -165,7 +189,36 @@ export const TextEditor: React.FC<TextEditorProps> = ({
   };
 
   return (
-    <div className={cn("border rounded-lg border-gray-200 bg-white shadow-sm text-editor-enter-active p-2 sm:p-4 w-full max-w-xl mx-auto", isExpanded && "text-movement")}>
+    <div className={cn("border rounded-lg border-gray-200 bg-white shadow-sm text-editor-enter-active p-2 sm:p-4 w-full max-w-xl mx-auto", isExpanded && "text-movement")}> 
+      {/* Editor Top Bar: Profile, Credits, Upgrade */}
+      <div className="flex items-center justify-between mb-2">
+        <span className="font-medium text-gray-900 truncate text-base sm:text-lg">
+          {textSet.text || 'Text Set'}
+        </span>
+        <div className="flex items-center gap-3">
+          {user && (
+            <div className="font-semibold text-xs sm:text-sm text-gray-700">
+              Credits: {credits !== null ? credits : '...'}
+              {credits === 0 && (
+                <button
+                  className="ml-2 bg-yellow-500 hover:bg-yellow-600 text-white px-2 py-1 rounded text-xs"
+                  onClick={() => setShowUpgrade(true)}
+                >
+                  Upgrade
+                </button>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+      {/* Upgrade Modal */}
+      <UpgradeModal open={showUpgrade} onClose={() => setShowUpgrade(false)} />
+      {/* Overlay when out of credits */}
+      {credits === 0 && (
+        <div className="absolute inset-0 z-40 bg-white bg-opacity-70 flex items-center justify-center pointer-events-auto select-none">
+          <span className="text-lg font-semibold text-gray-700">You have used your free credits. Please upgrade to continue editing.</span>
+        </div>
+      )}
       {/* Header */}
       <div 
         className="flex items-center justify-between p-2 sm:p-4 cursor-pointer hover:bg-gray-50 transition-colors"
@@ -182,196 +235,197 @@ export const TextEditor: React.FC<TextEditorProps> = ({
           )}
         </div>
       </div>
-
       {/* Content */}
-      {isExpanded && (
-        <div className="p-2 sm:p-4 border-t space-y-4 border-gray-200">
-          {/* Text Input */}
-          <div className="space-y-2">
-            <Label htmlFor={`text-${textSet.id}`}>Text Content</Label>
-            <input
-              id={`text-${textSet.id}`}
-              type="text"
-              value={textSet.text}
-              onChange={(e) => handleUpdate({ text: e.target.value })}
-              placeholder="Enter text..."
-              className="w-full p-2 rounded-md border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-base sm:text-lg"
-            />
-          </div>
-
-          {/* Font Family */}
-          <div className="space-y-2">
-            <Label htmlFor={`font-family-${textSet.id}`}>Font Family</Label>
-            <Select value={textSet.fontFamily} onValueChange={(value) => handleUpdate({ fontFamily: value })}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select font" />
-              </SelectTrigger>
-              <SelectContent className="max-h-72 overflow-y-auto">
-                {FONT_FAMILIES.map((font) => (
-                  <SelectItem key={font.name} value={font.name}>
-                    <span className="font-medium">{font.name}</span>
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-          </div>
-
-          {/* Font Size */}
-          <div className="space-y-2">
-            <Label htmlFor={`font-size-${textSet.id}`}>Font Size</Label>
-            <Slider
-              value={[textSet.fontSize]}
-              onValueChange={([value]) => handleUpdate({ fontSize: value })}
-              min={12}
-              max={800}
-              step={1}
-              className="w-full"
-            />
-            <div className="text-xs text-gray-500 text-center">
-              {textSet.fontSize}px
+      <div className={credits === 0 ? 'pointer-events-none select-none opacity-60' : ''}>
+        {isExpanded && (
+          <div className="p-2 sm:p-4 border-t space-y-4 border-gray-200">
+            {/* Text Input */}
+            <div className="space-y-2">
+              <Label htmlFor={`text-${textSet.id}`}>Text Content</Label>
+              <input
+                id={`text-${textSet.id}`}
+                type="text"
+                value={textSet.text}
+                onChange={(e) => handleUpdate({ text: e.target.value })}
+                placeholder="Enter text..."
+                className="w-full p-2 rounded-md border border-gray-300 bg-white text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-base sm:text-lg"
+              />
             </div>
-          </div>
 
-          {/* Font Weight */}
-          <div className="space-y-2">
-            <Label htmlFor={`font-weight-${textSet.id}`}>Font Weight</Label>
-            <Slider
-              value={[textSet.fontWeight]}
-              onValueChange={([value]) => handleUpdate({ fontWeight: value })}
-              min={Math.min(...currentFont.weights)}
-              max={Math.max(...currentFont.weights)}
-              step={100}
-              className="w-full"
-            />
-            <div className="text-xs text-gray-500 text-center">
-              {textSet.fontWeight}
+            {/* Font Family */}
+            <div className="space-y-2">
+              <Label htmlFor={`font-family-${textSet.id}`}>Font Family</Label>
+              <Select value={textSet.fontFamily} onValueChange={(value) => handleUpdate({ fontFamily: value })}>
+                <SelectTrigger>
+                  <SelectValue placeholder="Select font" />
+                </SelectTrigger>
+                <SelectContent className="max-h-72 overflow-y-auto">
+                  {FONT_FAMILIES.map((font) => (
+                    <SelectItem key={font.name} value={font.name}>
+                      <span className="font-medium">{font.name}</span>
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-          </div>
 
-          {/* Font Style (Italic) */}
-          {currentFont.hasItalic && (
+            {/* Font Size */}
+            <div className="space-y-2">
+              <Label htmlFor={`font-size-${textSet.id}`}>Font Size</Label>
+              <Slider
+                value={[textSet.fontSize]}
+                onValueChange={([value]) => handleUpdate({ fontSize: value })}
+                min={12}
+                max={800}
+                step={1}
+                className="w-full"
+              />
+              <div className="text-xs text-gray-500 text-center">
+                {textSet.fontSize}px
+              </div>
+            </div>
+
+            {/* Font Weight */}
+            <div className="space-y-2">
+              <Label htmlFor={`font-weight-${textSet.id}`}>Font Weight</Label>
+              <Slider
+                value={[textSet.fontWeight]}
+                onValueChange={([value]) => handleUpdate({ fontWeight: value })}
+                min={Math.min(...currentFont.weights)}
+                max={Math.max(...currentFont.weights)}
+                step={100}
+                className="w-full"
+              />
+              <div className="text-xs text-gray-500 text-center">
+                {textSet.fontWeight}
+              </div>
+            </div>
+
+            {/* Font Style (Italic) */}
+            {currentFont.hasItalic && (
+              <div className="flex items-center space-x-2">
+                <Checkbox
+                  id={`font-style-${textSet.id}`}
+                  checked={textSet.fontStyle === 'italic'}
+                  onCheckedChange={(checked) => handleUpdate({ fontStyle: checked ? 'italic' : 'normal' })}
+                />
+                <Label htmlFor={`font-style-${textSet.id}`} className="text-sm">
+                  Italic Style
+                </Label>
+              </div>
+            )}
+
+            {/* Text Color */}
+            <div className="space-y-2">
+              <Label htmlFor={`color-${textSet.id}`}>Text Color</Label>
+              <div className="flex items-center space-x-2">
+                <input
+                  id={`color-${textSet.id}`}
+                  type="color"
+                  value={textSet.textColor}
+                  onChange={(e) => handleUpdate({ textColor: e.target.value })}
+                  className="w-full h-10 rounded-md border cursor-pointer transition-all hover:scale-105"
+                />
+              </div>
+            </div>
+
+            {/* Position Controls */}
+            <div className="space-y-4">
+              <Label>Position</Label>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label className="text-xs text-gray-600">X Position</Label>
+                  <Slider
+                    value={[textSet.position.x]}
+                    onValueChange={([value]) => handleUpdate({ position: { ...textSet.position, x: value } })}
+                    max={maxX}
+                    step={1}
+                    className="w-full"
+                  />
+                  <div className="text-xs text-gray-500 text-center">
+                    {Math.round(textSet.position.x)}
+                  </div>
+                </div>
+                <div className="space-y-2">
+                  <Label className="text-xs text-gray-600">Y Position</Label>
+                  <Slider
+                    value={[textSet.position.y]}
+                    onValueChange={([value]) => handleUpdate({ position: { ...textSet.position, y: value } })}
+                    max={maxY}
+                    step={1}
+                    className="w-full"
+                  />
+                  <div className="text-xs text-gray-500 text-center">
+                    {Math.round(textSet.position.y)}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Text Opacity */}
+            <div className="space-y-2">
+              <Label htmlFor={`opacity-${textSet.id}`}>Text Opacity</Label>
+              <Slider
+                value={[textSet.opacity]}
+                onValueChange={([value]) => handleUpdate({ opacity: value })}
+                min={0}
+                max={1}
+                step={0.1}
+                className="w-full"
+              />
+              <div className="text-xs text-gray-500 text-center">
+                {textSet.opacity}
+              </div>
+            </div>
+
+            {/* Rotation */}
+            <div className="space-y-2">
+              <Label htmlFor={`rotation-${textSet.id}`}>Rotation</Label>
+              <Slider
+                value={[textSet.rotation]}
+                onValueChange={([value]) => handleUpdate({ rotation: value })}
+                min={-180}
+                max={180}
+                step={1}
+                className="w-full"
+              />
+              <div className="text-xs text-gray-500 text-center">
+                {Math.round(textSet.rotation)}°
+              </div>
+            </div>
+
+            {/* Text Shadow */}
             <div className="flex items-center space-x-2">
               <Checkbox
-                id={`font-style-${textSet.id}`}
-                checked={textSet.fontStyle === 'italic'}
-                onCheckedChange={(checked) => handleUpdate({ fontStyle: checked ? 'italic' : 'normal' })}
+                id={`text-shadow-${textSet.id}`}
+                checked={textSet.textShadow}
+                onCheckedChange={(checked) => handleUpdate({ textShadow: checked as boolean })}
               />
-              <Label htmlFor={`font-style-${textSet.id}`} className="text-sm">
-                Italic Style
+              <Label htmlFor={`text-shadow-${textSet.id}`} className="text-sm">
+                Enable Text Shadow
               </Label>
             </div>
-          )}
 
-          {/* Text Color */}
-          <div className="space-y-2">
-            <Label htmlFor={`color-${textSet.id}`}>Text Color</Label>
-            <div className="flex items-center space-x-2">
-              <input
-                id={`color-${textSet.id}`}
-                type="color"
-                value={textSet.textColor}
-                onChange={(e) => handleUpdate({ textColor: e.target.value })}
-                className="w-full h-10 rounded-md border cursor-pointer transition-all hover:scale-105"
-              />
+            {/* Actions */}
+            <div className="flex justify-end space-x-2 pt-4 border-t border-gray-200">
+              <button
+                onClick={() => onDuplicate(textSet.id)}
+                className="flex items-center gap-1 px-3 py-1.5 rounded text-sm border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all hover:scale-105"
+              >
+                <Copy className="w-3 h-3" />
+                Duplicate
+              </button>
+              <button
+                onClick={() => onRemove(textSet.id)}
+                className="flex items-center gap-1 px-3 py-1.5 rounded text-sm bg-red-500 text-white hover:bg-red-600 transition-all hover:scale-105"
+              >
+                <Trash2 className="w-3 h-3" />
+                Remove
+              </button>
             </div>
           </div>
-
-          {/* Position Controls */}
-          <div className="space-y-4">
-            <Label>Position</Label>
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label className="text-xs text-gray-600">X Position</Label>
-                <Slider
-                  value={[textSet.position.x]}
-                  onValueChange={([value]) => handleUpdate({ position: { ...textSet.position, x: value } })}
-                  max={maxX}
-                  step={1}
-                  className="w-full"
-                />
-                <div className="text-xs text-gray-500 text-center">
-                  {Math.round(textSet.position.x)}
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label className="text-xs text-gray-600">Y Position</Label>
-                <Slider
-                  value={[textSet.position.y]}
-                  onValueChange={([value]) => handleUpdate({ position: { ...textSet.position, y: value } })}
-                  max={maxY}
-                  step={1}
-                  className="w-full"
-                />
-                <div className="text-xs text-gray-500 text-center">
-                  {Math.round(textSet.position.y)}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Text Opacity */}
-          <div className="space-y-2">
-            <Label htmlFor={`opacity-${textSet.id}`}>Text Opacity</Label>
-            <Slider
-              value={[textSet.opacity]}
-              onValueChange={([value]) => handleUpdate({ opacity: value })}
-              min={0}
-              max={1}
-              step={0.1}
-              className="w-full"
-            />
-            <div className="text-xs text-gray-500 text-center">
-              {textSet.opacity}
-            </div>
-          </div>
-
-          {/* Rotation */}
-          <div className="space-y-2">
-            <Label htmlFor={`rotation-${textSet.id}`}>Rotation</Label>
-            <Slider
-              value={[textSet.rotation]}
-              onValueChange={([value]) => handleUpdate({ rotation: value })}
-              min={-180}
-              max={180}
-              step={1}
-              className="w-full"
-            />
-            <div className="text-xs text-gray-500 text-center">
-              {Math.round(textSet.rotation)}°
-            </div>
-          </div>
-
-          {/* Text Shadow */}
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id={`text-shadow-${textSet.id}`}
-              checked={textSet.textShadow}
-              onCheckedChange={(checked) => handleUpdate({ textShadow: checked as boolean })}
-            />
-            <Label htmlFor={`text-shadow-${textSet.id}`} className="text-sm">
-              Enable Text Shadow
-            </Label>
-          </div>
-
-          {/* Actions */}
-          <div className="flex justify-end space-x-2 pt-4 border-t border-gray-200">
-            <button
-              onClick={() => onDuplicate(textSet.id)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded text-sm border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all hover:scale-105"
-            >
-              <Copy className="w-3 h-3" />
-              Duplicate
-            </button>
-            <button
-              onClick={() => onRemove(textSet.id)}
-              className="flex items-center gap-1 px-3 py-1.5 rounded text-sm bg-red-500 text-white hover:bg-red-600 transition-all hover:scale-105"
-            >
-              <Trash2 className="w-3 h-3" />
-              Remove
-            </button>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
