@@ -11,10 +11,9 @@ interface PricingCardProps {
 export default function PricingCard({ onSignIn, showSignInButton = true, requireSignIn = false, showBuyButton = true }: PricingCardProps) {
   return (
     <div className="bg-white rounded-3xl shadow-2xl border border-gray-200 max-w-md w-full p-8 flex flex-col items-center mx-auto">
-      <h2 className="text-3xl font-extrabold text-gray-900 mb-2 text-center">Free Plan</h2>
-      <p className="text-center mb-4">Includes 2 free credits</p>
+      <h2 className="text-3xl font-extrabold text-gray-900 mb-2 text-center">Creator Plan</h2>
       <div className="text-center mb-4">
-        <span className="text-2xl font-bold text-[#0071e3]">$1.5</span>
+        <span className="text-2xl font-bold text-[#0071e3]">$5</span>
         <span className="text-base text-gray-700 font-medium ml-2">/ One Time</span>
       </div>
       <ul className="mb-6 text-gray-700 text-base list-none text-left w-full max-w-xs mx-auto space-y-2">
