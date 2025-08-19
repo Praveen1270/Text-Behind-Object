@@ -297,8 +297,40 @@ export const TextEditor: React.FC<TextEditorProps> = ({
                   />
                 </div>
 
-                
-
+                {/* Spacing */}
+                <div className="space-y-2">
+                  <Label>Spacing</Label>
+                  <div className="space-y-3">
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label>Line height</Label>
+                        <span className="text-xs text-gray-500">{(textSet.lineHeight ?? 1.25).toFixed(2)}</span>
+                      </div>
+                      <Slider
+                        value={[textSet.lineHeight ?? 1.25]}
+                        onValueChange={([value]) => handleUpdate({ lineHeight: value })}
+                        min={0.5}
+                        max={3}
+                        step={0.05}
+                        className="w-full"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <Label>Letter spacing</Label>
+                        <span className="text-xs text-gray-500">{(textSet.letterSpacing ?? 0).toFixed(1)}px</span>
+                      </div>
+                      <Slider
+                        value={[textSet.letterSpacing ?? 0]}
+                        onValueChange={([value]) => handleUpdate({ letterSpacing: value })}
+                        min={-20}
+                        max={20}
+                        step={0.5}
+                        className="w-full"
+                      />
+                    </div>
+                  </div>
+                </div>
                 {/* Font Style (Italic) */}
                 {currentFont.hasItalic && (
                   <div className="flex items-center gap-2">

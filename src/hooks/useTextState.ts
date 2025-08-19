@@ -15,6 +15,8 @@ export interface TextSet {
   position: { x: number; y: number };
   textShadow: boolean;
   textAlign?: 'left' | 'center' | 'right';
+  lineHeight?: number; // multiplier, e.g., 1.25
+  letterSpacing?: number; // pixels per character
 }
 
 const createTextSet = (id?: string): TextSet => ({
@@ -32,6 +34,9 @@ const createTextSet = (id?: string): TextSet => ({
   position: { x: 100, y: 100 },
   textShadow: false,
   textAlign: 'left'
+  ,
+  lineHeight: 1.25,
+  letterSpacing: 0
 });
 
 export const useTextState = () => {

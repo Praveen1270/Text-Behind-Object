@@ -61,9 +61,21 @@ export const Canvas = forwardRef<CanvasHandle, CanvasProps>(({
     let totalHeight = 0;
     
     lines.forEach((line) => {
-      const metrics = ctx.measureText(line);
-      maxWidth = Math.max(maxWidth, metrics.width);
-      totalHeight += textSet.fontSize * 1.25;
+      // Account for letter spacing by summing glyph widths + spacing
+      let lineWidth = 0;
+      const spacing = textSet.letterSpacing ?? 0;
+      if (spacing !== 0) {
+        for (let i = 0; i < line.length; i++) {
+          const ch = line[i];
+          lineWidth += ctx.measureText(ch).width;
+          if (i < line.length - 1) lineWidth += spacing;
+        }
+      } else {
+        lineWidth = ctx.measureText(line).width;
+      }
+      maxWidth = Math.max(maxWidth, lineWidth);
+      const multiplier = textSet.lineHeight ?? 1.25;
+      totalHeight += textSet.fontSize * multiplier;
     });
     
     return { width: maxWidth, height: totalHeight };
@@ -166,17 +178,38 @@ export const Canvas = forwardRef<CanvasHandle, CanvasProps>(({
       const { width: measuredWidth } = measureText(textSet, ctx);
       const minContainerWidth = Math.min(600, canvasWidth);
       const containerWidth = Math.max(measuredWidth, minContainerWidth);
-      const lineHeight = textSet.fontSize * 1.25;
+      const lineHeight = textSet.fontSize * (textSet.lineHeight ?? 1.25);
       lines.forEach((line, index) => {
-        const metrics = ctx.measureText(line);
+        // Compute line width with letter spacing
+        let lineWidth = 0;
+        const spacing = textSet.letterSpacing ?? 0;
+        if (spacing !== 0) {
+          for (let i = 0; i < line.length; i++) {
+            const ch = line[i];
+            lineWidth += ctx.measureText(ch).width;
+            if (i < line.length - 1) lineWidth += spacing;
+          }
+        } else {
+          lineWidth = ctx.measureText(line).width;
+        }
         let xOffset = 0;
         const align = textSet.textAlign || 'left';
         if (align === 'center') {
-          xOffset = (containerWidth - metrics.width) / 2;
+          xOffset = (containerWidth - lineWidth) / 2;
         } else if (align === 'right') {
-          xOffset = containerWidth - metrics.width;
+          xOffset = containerWidth - lineWidth;
         }
-        ctx.fillText(line, xOffset, index * lineHeight);
+        if (spacing === 0) {
+          ctx.fillText(line, xOffset, index * lineHeight);
+        } else {
+          // Draw per-character to apply letter spacing visually
+          let cursorX = xOffset;
+          for (let i = 0; i < line.length; i++) {
+            const ch = line[i];
+            ctx.fillText(ch, cursorX, index * lineHeight);
+            cursorX += ctx.measureText(ch).width + spacing;
+          }
+        }
       });
       
       ctx.restore();
