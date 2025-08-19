@@ -146,6 +146,7 @@ export const Canvas = forwardRef<CanvasHandle, CanvasProps>(({
       ctx.fillStyle = textSet.textColor;
       ctx.globalAlpha = textSet.opacity;
       ctx.textBaseline = 'top';
+      // Always render relative to the left edge of a fixed text container
       ctx.textAlign = 'left';
       
       // Apply transformations
@@ -160,10 +161,22 @@ export const Canvas = forwardRef<CanvasHandle, CanvasProps>(({
         ctx.shadowOffsetY = 2;
       }
       
-      // Draw text lines
+      // Draw text lines inside a fixed container with internal alignment offsets
       const lines = textSet.text.split('\n');
+      const { width: measuredWidth } = measureText(textSet, ctx);
+      const minContainerWidth = Math.min(600, canvasWidth);
+      const containerWidth = Math.max(measuredWidth, minContainerWidth);
+      const lineHeight = textSet.fontSize * 1.25;
       lines.forEach((line, index) => {
-        ctx.fillText(line, 0, index * textSet.fontSize * 1.25);
+        const metrics = ctx.measureText(line);
+        let xOffset = 0;
+        const align = textSet.textAlign || 'left';
+        if (align === 'center') {
+          xOffset = (containerWidth - metrics.width) / 2;
+        } else if (align === 'right') {
+          xOffset = containerWidth - metrics.width;
+        }
+        ctx.fillText(line, xOffset, index * lineHeight);
       });
       
       ctx.restore();
@@ -259,19 +272,15 @@ export const Canvas = forwardRef<CanvasHandle, CanvasProps>(({
 
     // Check if click is on any text with proper measurement
     const clickedText = textSets.find(textSet => {
-      const { width, height } = measureText(textSet, ctx);
-      
-      const textBounds = {
-        left: textSet.position.x,
-        right: textSet.position.x + width,
-        top: textSet.position.y,
-        bottom: textSet.position.y + height
-      };
-      
-      return x >= textBounds.left && 
-             x <= textBounds.right &&
-             y >= textBounds.top && 
-             y <= textBounds.bottom;
+      const { width: measuredWidth, height } = measureText(textSet, ctx);
+      const minContainerWidth = Math.min(600, canvasWidth);
+      const containerWidth = Math.max(measuredWidth, minContainerWidth);
+      // Use a fixed container anchored at position.x/position.y regardless of alignment
+      const left = textSet.position.x;
+      const right = textSet.position.x + containerWidth;
+      const top = textSet.position.y;
+      const bottom = textSet.position.y + height;
+      return x >= left && x <= right && y >= top && y <= bottom;
     });
 
     if (clickedText) {
@@ -306,7 +315,7 @@ export const Canvas = forwardRef<CanvasHandle, CanvasProps>(({
   }, []);
 
   return (
-    <div className={cn("relative canvas-hover w-full max-w-full overflow-x-auto p-2 sm:p-0", isDragging && "text-movement")} style={{ width: '100%', maxWidth: previewDisplayWidth, height: previewDisplayHeight, minWidth: 0 }}>
+    <div className={cn("relative canvas-hover w-full max-w-full overflow-hidden p-2 sm:p-0", isDragging && "text-movement")} style={{ width: '100%', maxWidth: previewDisplayWidth, height: previewDisplayHeight, minWidth: 0 }}>
       {/* Main display canvas */}
       <canvas
         ref={canvasRef}

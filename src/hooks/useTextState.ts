@@ -14,12 +14,13 @@ export interface TextSet {
   verticalTilt: number;
   position: { x: number; y: number };
   textShadow: boolean;
+  textAlign?: 'left' | 'center' | 'right';
 }
 
 const createTextSet = (id?: string): TextSet => ({
   id: id || Date.now().toString(),
   text: 'edit',
-  fontSize: 48,
+  fontSize: 300,
   fontFamily: 'Inter',
   fontStyle: 'normal',
   textColor: '#FFFFFF',
@@ -29,7 +30,8 @@ const createTextSet = (id?: string): TextSet => ({
   horizontalTilt: 0,
   verticalTilt: 0,
   position: { x: 100, y: 100 },
-  textShadow: false
+  textShadow: false,
+  textAlign: 'left'
 });
 
 export const useTextState = () => {

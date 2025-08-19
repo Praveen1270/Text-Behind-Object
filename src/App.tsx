@@ -1,5 +1,5 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
-import { Upload, Download } from 'lucide-react';
+import { Download } from 'lucide-react';
 import { removeBackground } from '@imgly/background-removal';
 import { ImageUpload } from './components/ImageUpload';
 import { TextEditor } from './components/TextEditor';
@@ -157,6 +157,7 @@ function Editor() {
                   {isProcessing ? 'Saving...' : 'Save Image'}
                 </button>
               )}
+              
               <ProfileMenu />
             </div>
           </div>
@@ -195,7 +196,7 @@ function Editor() {
                   />
                 </div>
                 {/* Right Panel */}
-                <div className="w-80 border-l border-gray-200 bg-gray-50 overflow-y-auto">
+                <div className="w-[420px] xl:w-[480px] border-l border-gray-200 bg-gray-50 overflow-y-auto">
                   <div className="p-6">
                     <div className="flex items-center justify-between mb-6">
                       <button
