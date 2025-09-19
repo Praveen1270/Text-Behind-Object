@@ -2,11 +2,11 @@ import React from 'react';
 import Header from './Header';
 
 const sampleImages = [
-  '/landingpage/1.jpg',
-  '/landingpage/2.jpg',
-  '/landingpage/3.jpg',
-  '/landingpage/4.jpg',
-  '/landingpage/5.jpg',
+  '/1.jpg',
+  '/2.jpg',
+  '/3.jpg',
+  '/4.jpg',
+  '/5.jpg',
 ];
 
 interface LandingPageProps {
