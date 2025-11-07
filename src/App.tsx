@@ -344,6 +344,7 @@ function App() {
           </ProtectedRoute>
         } />
       </Routes>
+      <Analytics />
     </>
   );
 }
